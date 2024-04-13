@@ -144,7 +144,9 @@ function App() {
         </h2>
         <div className="Translator">
           <div className="Left">
-            <div>Step 1: Select source and target languages</div>
+            <div className="Step">
+              Step 1: Select source and target languages
+            </div>
             <div className="LanguageSelect">
               Translate From
               <select
@@ -165,13 +167,17 @@ function App() {
                 <option value="zh">Chinese</option>
               </select>
             </div>
-            <div>
+            <div className="Step">
               Step 2: Enable the Microphone and speak in your own language
             </div>
-            <FaMicrophone className="MicToggle" onClick={listen} />
+            <FaMicrophone
+              style={{ color: !listening ? "black" : "red" }}
+              className="MicToggle"
+              onClick={listen}
+            />
           </div>
           <div className="Right">
-            <div>
+            <div className="Step">
               Step 3: View the live transcription and translation in 100+
               different languages
             </div>
@@ -187,7 +193,9 @@ function App() {
             </div>
           </div>
           <div>
-            <div>Step 4: See the cultural explanation for understanding</div>
+            <div className="Step">
+              Step 4: See the cultural explanation for understanding
+            </div>
             {contexts.map((context, index) => (
               <div key={index}>{context.text}</div>
             ))}
