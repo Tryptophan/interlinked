@@ -7,21 +7,68 @@
 
 .App {
   display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 24px;
+  color: #ffab00;
+  margin-bottom: 80px;
+}
+
+.Translator {
+  display: flex;
   flex-direction: row;
   gap: 20px;
   align-items: center;
+  background-color: white;
+  color: black;
+  padding: 20px;
 }
 
-.Left {
+.Translator > div {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 400px;
+  align-items: center;
+  gap: 40px;
+  width: 450px;
 }
 
-.Right {
+.LanguageSelect {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.LanguageSelect select {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #cb40b5 0%, #ef6f62 100%);
+  border: none;
+}
+
+.MicToggle {
+  width: 40px;
+  height: 40px;
+}
+
+.MicToggle:hover {
+  cursor: pointer;
+}
+
+.Transcripts {
+  background-color: #00814a;
+  width: 400px;
+  height: 400px;
+  border-radius: 10px;
+  color: white;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 400px;
+  gap: 40px;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
 }
