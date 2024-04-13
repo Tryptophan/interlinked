@@ -1,3 +1,4 @@
+import anthropic
 import re
 import asyncio
 import requests
@@ -6,6 +7,32 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+anthropic_client = anthropic.Client(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+
+def call_haiku_with_prompt(prompt):
+    message = anthropic_client.messages.create(
+        model="claude-3-haiku-20240307",
+        system="You are an expert AI translation assistant, creating captions and images for interactive video conversations. You help everyone understand.",
+        max_tokens=1000,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": prompt
+                    }
+                ],
+            }
+        ],
+    )
+
+    answer = message.content[0].text.strip().lower()
+
+    return answer
 
 
 def call_fireworks_api(user_message):
@@ -122,7 +149,7 @@ async def add_emphasis(lang, text):
         
     
     """
-    raw_answer = call_fireworks_api(prompt)
+    raw_answer = call_haiku_with_prompt(prompt)
     answer = extract_from_triple_backticks(raw_answer)[0].strip()
     return answer
 
