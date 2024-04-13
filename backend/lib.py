@@ -1,3 +1,4 @@
+import re
 import asyncio
 import requests
 import json
@@ -38,21 +39,20 @@ def call_fireworks_api(user_message):
     return answer
 
 
-import re
-
 def extract_from_triple_backticks(text):
     """
     Extracts and returns all text blocks enclosed in triple backticks from the given text.
-    
+
     Parameters:
     - text (str): The text from which to extract the enclosed blocks.
-    
+
     Returns:
     - List[str]: A list of strings, each being a block of text that was enclosed in triple backticks.
     """
     pattern = r"```(.*?)```"
     matches = re.findall(pattern, text, re.DOTALL)
     return matches
+
 
 async def translate_text(from_lang, to_lang, text):
     prompt = f"""
@@ -77,21 +77,53 @@ async def translate_text(from_lang, to_lang, text):
     return answer
 
 
-async def add_emphasis(text, lang):
+async def add_emphasis(lang, text):
     prompt = f"""
-    Your job is to translate sentence text to html and add emphasis along the way.
+    Your job is to translate sentence text in any lang provided to html and add emphasis along the way. Please use <p> tags. Enclose the whole fragment in triple backticks ```
+
+    You do not have to add emphasis!
     
     Examples: 
     
-    Text: I visited the Great Wall yesterday.
-    Answer: 
+    Lang: English
+    Text: John is going to New York tomorrow.
+    Emphasized HTML: 
+    ```
+    <p>John</p> <p>is</p> <p>going</p> <p>to</p> <p class="emphasis-1">New</p> <p class="emphasis-2">York</p> <p>tomorrow.</p>
+    ```
     
-    {text}
+    Lang: Hindi
+    Text: राम दिल्ली में रहता है।
+    Emphasized HTML: 
+    ```
+    <p class="emphasis-1">राम</p> <p class="emphasis-2">दिल्ली</p> <p>में</p> <p>रहता</p> <p>है।</p>
+    ```
     
-    Return the text inside triple backticks.
+    Lang: Chinese
+    Text: 我和李娜去北京旅游
+    Emphasized HTML: 
+    ```
+    <p>我</p><p>和</p><p class="emphasis-2">李娜</p><p>去</p><p class="emphasis-1">北京</p><p>旅游。</p>
+    ```
+    
+    Lang: English
+    Text: Hello how are you?
+    Emphasized HTML: 
+    ```
+    <p>Hello</p> <p>how</p> <p>are</p> <p>you?</p>
+    ```
+    
+    Task: 
+    
+    Lang: {lang}
+    Text: {text}
+    Emphasized HTML: 
+    
+        
+    
     """
     raw_answer = call_fireworks_api(prompt)
-    answer = extract_from_triple_backticks(raw_answer)[0]
+    answer = extract_from_triple_backticks(raw_answer)[0].strip()
     return answer
 
 
