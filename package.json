@@ -1,0 +1,28 @@
+{
+  "name": "interlinked",
+  "version": "1.0.0",
+  "description": "demo of Daily's prebuilt UI for video calls",
+  "scripts": {
+    "prettify": "prettier --write \"./**/*.{js,css,html,md}\"",
+    "dev": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daily-demos/prebuilt-ui.git"
+  },
+  "keywords": [
+    "video",
+    "webrtc",
+    "daily"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daily-demos/prebuilt-ui/issues"
+  },
+  "homepage": "https://github.com/daily-demos/prebuilt-ui#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "prettier": "^3.0.2"
+  }
+}
