@@ -15,9 +15,9 @@ def read_root():
     return {"message": "Hello World"}
 
 @app.post("/api/translate")
-def translate(request: TranslationRequest):
+async def translate(request: TranslationRequest):
     try:
-        translated_text = lib.translate_text(request.from_lang, request.to_lang, request.text)
+        translated_text = await lib.translate_text(request.from_lang, request.to_lang, request.text)
         return {"translated_text": translated_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

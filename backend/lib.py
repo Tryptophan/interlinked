@@ -73,6 +73,24 @@ async def translate_text(from_lang, to_lang, text):
     Translation:
     """
     raw_answer = call_fireworks_api(prompt)
+    answer = extract_from_triple_backticks(raw_answer)[0].strip()
+    return answer
+
+
+async def add_emphasis(text, lang):
+    prompt = f"""
+    Your job is to translate sentence text to html and add emphasis along the way.
+    
+    Examples: 
+    
+    Text: I visited the Great Wall yesterday.
+    Answer: 
+    
+    {text}
+    
+    Return the text inside triple backticks.
+    """
+    raw_answer = call_fireworks_api(prompt)
     answer = extract_from_triple_backticks(raw_answer)[0]
     return answer
 
