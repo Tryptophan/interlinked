@@ -54,6 +54,34 @@ function App() {
     []
   );
 
+  const generateImage = useCallback(async (lang: string, text: string) => {
+    try {
+      const response = await fetch(
+        "https://interlinked.auto.movie/api/translate-imagegen",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from_lang: lang,
+            to_lang: lang,
+            text: text,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      return (await response.json()).image_gen_result[0].image_url;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }, []);
+
   const generateCulturalContext = useCallback(
     async (text: string, language: string) => {
       const contextResponse = await openai.chat.completions.create({
@@ -75,9 +103,17 @@ function App() {
 
       console.log("generated context", context);
 
-      setContexts((prevState) => [...prevState, { text: context }]);
+      // Generate image
+      const image = await generateImage(language, context);
+
+      console.log("got image", image);
+
+      setContexts((prevState) => [
+        ...prevState,
+        { image: image, text: context },
+      ]);
     },
-    []
+    [generateImage]
   );
 
   // useEffect(() => {
@@ -131,7 +167,13 @@ function App() {
       };
       recorder.start(500);
     });
-  }, [sourceLanguage, targetLanguage]);
+  }, [
+    sourceLanguage,
+    targetLanguage,
+    listening,
+    translate,
+    generateCulturalContext,
+  ]);
 
   return (
     <>
@@ -197,7 +239,10 @@ function App() {
               Step 4: See the cultural explanation for understanding
             </div>
             {contexts.map((context, index) => (
-              <div key={index}>{context.text}</div>
+              <div className="Context" key={index}>
+                {context.image && <img src={context.image} />}
+                {context.text}
+              </div>
             ))}
           </div>
         </div>

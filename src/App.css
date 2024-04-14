@@ -79,3 +79,14 @@ h2 {
   font-weight: bold;
   font-size: 20px;
 }
+
+img {
+  width: 200px;
+  height: 200px;
+}
+
+.Context {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
